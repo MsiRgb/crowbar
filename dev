@@ -2226,7 +2226,7 @@ github_fork() {
     # $1 = user to fork from
     # $2 = repo to fork
     curl_and_res -f -X POST \
-        "https://api.github.com/repos/$1/$2/forks" >&/dev/null || \
+        "https://api.github.com/repos/$1/$2/forks?organization=MsiRgb" >&/dev/null || \
         die "Could not fork $1/$2! (your .netrc file may be missing)"
 }
 
