@@ -15,6 +15,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+set -x -v
+exec 1>/var/log/install-chef.log 2>&1
 
 if [[ -f /opt/dell/crowbar_framework/.crowbar-installed-ok ]]; then
     echo "Crowbar is already installed, refusing to let install run."
@@ -525,7 +527,7 @@ fi
 echo "Admin node deployed."
 
 # Run tests -- currently the host will run this.
-/opt/dell/bin/barclamp_test.rb -t || \
-    die "Crowbar validation has errors! Please check the logs and correct."
+#/opt/dell/bin/barclamp_test.rb -t || \
+#    die "Crowbar validation has errors! Please check the logs and correct."
 bluepill load /etc/bluepill/chef-client.pill
 touch /opt/dell/crowbar_framework/.crowbar-installed-ok
