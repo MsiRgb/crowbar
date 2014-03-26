@@ -1,10 +1,18 @@
 #!/usr/bin/env python2
 
+import pip
 import sys, os, tarfile, zipfile, shutil, urllib2, getopt
+from distutils.version import StrictVersion
 from pip.util import splitext
 from pip.exceptions import DistributionNotFound
 from pip.index import PackageFinder
 from pip.req import InstallRequirement
+
+#Check pip version before working
+if StrictVersion(pip.__version__) < StrictVersion('1.4.1'):
+    print("ERROR: Pip version should be 1.4.1 or more. Current version"
+          " %s" % pip.__version__)
+    exit(1)
 
 class Bundler:
     def __init__(self, cache_directory, use_wheel=False):
@@ -66,6 +74,8 @@ class Bundler:
         self.update = update
         for require in requires:
             try:
+                if require.startswith('#'):
+                    continue
                 package = self.finder.find_requirement(InstallRequirement.from_line(require, None), False)
                 if not self._is_cached(package.filename):
                     if self.update:
